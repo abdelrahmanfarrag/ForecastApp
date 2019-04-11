@@ -1,6 +1,6 @@
-package com.example.buidlingforecast.data
+package com.example.buidlingforecast.data.network
 
-import com.example.buidlingforecast.data.response.CurrentWeather
+import com.example.buidlingforecast.data.network.response.CurrentWeather
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import kotlinx.coroutines.Deferred
 import okhttp3.Interceptor
@@ -23,7 +23,10 @@ interface ApixuService {
 
     companion object {
 
-        operator fun invoke(): ApixuService {
+        operator fun invoke(
+            connectivityInterceptor: connectivityInterceptor
+
+        ): ApixuService {
             val requestInterceptor = Interceptor { chain ->
                 val url = chain
                     .request()
@@ -42,6 +45,7 @@ interface ApixuService {
             }
             val okHttpClient = OkHttpClient.Builder()
                 .addInterceptor(requestInterceptor)
+                .addInterceptor(connectivityInterceptor)
                 .build()
 
             return Retrofit.Builder().client(okHttpClient).baseUrl("https://api.apixu.com/v1/")

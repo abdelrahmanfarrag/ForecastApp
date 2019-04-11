@@ -1,4 +1,4 @@
-package com.example.buidlingforecast.data.response
+package com.example.buidlingforecast.data.network.response
 
 import com.google.gson.annotations.SerializedName
 
