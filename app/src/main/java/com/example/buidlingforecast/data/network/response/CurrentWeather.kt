@@ -1,10 +1,12 @@
 package com.example.buidlingforecast.data.network.response
 
+import androidx.room.Entity
+import com.example.buidlingforecast.data.database.entity.CurrentWeatherEntity
 import com.google.gson.annotations.SerializedName
 
 data class CurrentWeather(
     @SerializedName("current")
-    val current: Current,
+    val current: CurrentWeatherEntity,
     @SerializedName("location")
     val location: Location
 ) {
