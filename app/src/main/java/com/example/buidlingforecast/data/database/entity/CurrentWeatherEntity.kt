@@ -9,7 +9,7 @@ import com.google.gson.annotations.SerializedName
 
 const val PRIMARY_KEY :Int = 0
 @Entity(tableName = "current_weather")
- class CurrentWeatherEntity(
+ data class CurrentWeatherEntity(
     @SerializedName("cloud")
     val cloud: Int,
     @SerializedName("condition")
