@@ -25,11 +25,6 @@ class WeatherFragment : ScopedFragment(), KodeinAware {
 
     private val viewmodelFactory by instance<WeatherViewmodelFactory>()
 
-
-    companion object {
-        fun newInstance() = WeatherFragment()
-    }
-
     private lateinit var viewModel: WeatherViewModel
 
     override fun onCreateView(
@@ -50,21 +45,23 @@ class WeatherFragment : ScopedFragment(), KodeinAware {
         currentWeather.observe(this@WeatherFragment, Observer {
 
             if (it == null) return@Observer
-            var loadinUrl = "https:${it.conditionImgUrl}"
+            val loadingUrl = "https:${it.conditionImgUrl}"
             group_loading.visibility = View.GONE
             updateLocation("Los Angelos")
             updateDate("")
-            updateTemperature(it.tempreature,it.feelsLikeTemperature)
+            updateTemperature(it.tempreature, it.feelsLikeTemperature)
             updateCondition(it.conditionText)
             updatePerciptation(it.precipationVolume)
-            updateWind(it.windDirection,it.windSpeed)
+            updateWind(it.windDirection, it.windSpeed)
             updateSpeed(it.windSpeed)
-            GlideApp.with(this@WeatherFragment)
-                .load(loadinUrl)
-                .into(imageView_condition_icon)
-Log.d("url",loadinUrl)
-            //  textView.text = it.toString()
+            settingWeatherImage(loadingUrl)
         })
+
+    }
+    private fun settingWeatherImage(url:String){
+        GlideApp.with(this@WeatherFragment)
+            .load(url)
+            .into(imageView_condition_icon)
 
     }
 
@@ -78,7 +75,7 @@ Log.d("url",loadinUrl)
     }
 
     private fun updateTemperature(temp: Double, feelsLike: Double) {
-        val  unit = chooseLocationUnit("°C","°F")
+        val unit = chooseLocationUnit("°C", "°F")
         textView_temperature.text = "$temp$unit"
         textView_feels_like_temperature.text = "$feelsLike$unit"
 
@@ -90,18 +87,20 @@ Log.d("url",loadinUrl)
     }
 
     private fun updatePerciptation(perceptationVolume: Double) {
-        val percipationUnit = chooseLocationUnit("mm","in")
-        textView_precipitation.text ="Percipation : $perceptationVolume$percipationUnit"
+        val percipationUnit = chooseLocationUnit("mm", "in")
+        textView_precipitation.text = "Percipation : $perceptationVolume$percipationUnit"
 
 
     }
-        private fun updateWind(windDirection:String,windSpeed:Double){
-        val windUnit =  chooseLocationUnit("kph","mph")
+
+    private fun updateWind(windDirection: String, windSpeed: Double) {
+        val windUnit = chooseLocationUnit("kph", "mph")
         textView_wind.text = "Wind : $windDirection,$windSpeed$windUnit"
     }
-    private fun updateSpeed(visiblityDisance:Double){
-        val visiblityUnit =  chooseLocationUnit("km","mi.")
-        textView_visibility.text= "Visiblity : $visiblityDisance$visiblityUnit"
+
+    private fun updateSpeed(visiblityDisance: Double) {
+        val visiblityUnit = chooseLocationUnit("km", "mi.")
+        textView_visibility.text = "Visiblity : $visiblityDisance$visiblityUnit"
 
     }
 
