@@ -5,8 +5,9 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.example.buidlingforecast.data.database.entity.CurrentWeatherEntity
+import com.example.buidlingforecast.data.database.entity.Location
 
-@Database(entities = [CurrentWeatherEntity::class], version = 1)
+@Database(entities = [CurrentWeatherEntity::class,Location::class], version = 1)
 abstract class WeatherDatabase : RoomDatabase() {
 
     companion object {
@@ -25,4 +26,5 @@ abstract class WeatherDatabase : RoomDatabase() {
 
 
     abstract fun accessToWeatherDatabase(): currentWeatherDao
+    abstract fun accessToLocationDatabase(): LocationDao
 }

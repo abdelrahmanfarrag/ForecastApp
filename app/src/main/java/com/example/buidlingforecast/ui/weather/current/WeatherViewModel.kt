@@ -19,4 +19,7 @@ class WeatherViewModel(
     val fetchWeatherFromRepo by lazyDeferred {
         repository.getCurrentWeather(isMetric)
     }
+    val fetchUserLocation by lazyDeferred {
+        repository.getWeatherLocation()
+    }
 }

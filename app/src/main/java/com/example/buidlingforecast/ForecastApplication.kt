@@ -4,6 +4,8 @@ import android.app.Application
 import android.content.Context
 import com.example.buidlingforecast.data.database.WeatherDatabase
 import com.example.buidlingforecast.data.network.*
+import com.example.buidlingforecast.data.provider.LocationProvider
+import com.example.buidlingforecast.data.provider.LocationProviderImpl
 import com.example.buidlingforecast.data.provider.UnitProvider
 import com.example.buidlingforecast.data.provider.UnitProviderImpl
 import com.example.buidlingforecast.data.repository.ForecastRepository
@@ -26,10 +28,20 @@ class ForecastApplication : Application(), KodeinAware {
 
         bind() from singleton { WeatherDatabase(instance()) }
         bind() from singleton { instance<WeatherDatabase>().accessToWeatherDatabase() }
+        bind() from singleton { instance<WeatherDatabase>().accessToLocationDatabase() }
+
         bind<connectivityInterceptor>() with singleton { connectivityInterceptorImpl(instance()) }
         bind() from singleton { ApixuService(instance()) }
         bind<weatherNetworkOutsource>() with singleton { weatherNetworkOutsourceImpl(instance()) }
-        bind<ForecastRepository>() with singleton { ForecastRepositoryImpl(instance(), instance()) }
+        bind<LocationProvider>() with singleton { LocationProviderImpl() }
+        bind<ForecastRepository>() with singleton {
+            ForecastRepositoryImpl(
+                instance(),
+                instance(),
+                instance(),
+                instance()
+            )
+        }
         bind<UnitProvider>() with singleton { UnitProviderImpl(instance()) }
         bind() from provider { WeatherViewmodelFactory(instance(), instance()) }
 

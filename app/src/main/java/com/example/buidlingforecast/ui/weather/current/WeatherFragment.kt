@@ -19,6 +19,7 @@ import org.kodein.di.KodeinAware
 import org.kodein.di.android.x.closestKodein
 import org.kodein.di.generic.instance
 
+@Suppress("SENSELESS_COMPARISON")
 class WeatherFragment : ScopedFragment(), KodeinAware {
 
     override val kodein: Kodein by closestKodein()
@@ -42,12 +43,12 @@ class WeatherFragment : ScopedFragment(), KodeinAware {
 
     private fun bindUi() = launch {
         val currentWeather = viewModel.fetchWeatherFromRepo.await()
+        val location = viewModel.fetchUserLocation.await()
         currentWeather.observe(this@WeatherFragment, Observer {
 
             if (it == null) return@Observer
             val loadingUrl = "https:${it.conditionImgUrl}"
             group_loading.visibility = View.GONE
-            updateLocation("Los Angelos")
             updateDate("")
             updateTemperature(it.tempreature, it.feelsLikeTemperature)
             updateCondition(it.conditionText)
@@ -57,8 +58,15 @@ class WeatherFragment : ScopedFragment(), KodeinAware {
             settingWeatherImage(loadingUrl)
         })
 
+        location.observe(this@WeatherFragment, Observer { location ->
+            if (location == null) return@Observer
+            updateLocation(location.name)
+
+        })
+
     }
-    private fun settingWeatherImage(url:String){
+
+    private fun settingWeatherImage(url: String) {
         GlideApp.with(this@WeatherFragment)
             .load(url)
             .into(imageView_condition_icon)
