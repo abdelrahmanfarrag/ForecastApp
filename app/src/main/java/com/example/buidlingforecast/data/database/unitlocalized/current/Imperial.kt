@@ -1,22 +1,22 @@
-package com.example.buidlingforecast.data.database.unitlocalized
+package com.example.buidlingforecast.data.database.unitlocalized.current
 
 import androidx.room.ColumnInfo
 
-data class Metric(
-    @ColumnInfo(name = "tempC")
+data class Imperial(
+    @ColumnInfo(name = "tempF")
     override val tempreature: Double,
     @ColumnInfo(name = "condition_text")
     override val conditionText: String,
     @ColumnInfo(name = "condition_icon")
     override val conditionImgUrl: String,
-    @ColumnInfo(name = "windKph")
+    @ColumnInfo(name = "windMph")
     override val windSpeed: Double,
     @ColumnInfo(name = "windDir")
     override val windDirection: String,
-    @ColumnInfo(name = "precipMm")
+    @ColumnInfo(name = "pressureIn")
     override val precipationVolume: Double,
-    @ColumnInfo(name = "feelslikeC")
+    @ColumnInfo(name = "feelslikeF")
     override val feelsLikeTemperature: Double,
-    @ColumnInfo(name = "visKm")
+    @ColumnInfo(name = "visMiles")
     override val visibilityDistance: Double
 ) : unitSpecificCurrentWeatherEntry

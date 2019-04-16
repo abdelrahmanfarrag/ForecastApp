@@ -4,10 +4,13 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import androidx.room.TypeConverters
 import com.example.buidlingforecast.data.database.entity.CurrentWeatherEntity
+import com.example.buidlingforecast.data.database.entity.FutureWeatherEntry
 import com.example.buidlingforecast.data.database.entity.Location
 
-@Database(entities = [CurrentWeatherEntity::class,Location::class], version = 1)
+@Database(entities = [CurrentWeatherEntity::class, Location::class, FutureWeatherEntry::class], version = 1)
+@TypeConverters(LocalDateConverter::class)
 abstract class WeatherDatabase : RoomDatabase() {
 
     companion object {
@@ -27,4 +30,5 @@ abstract class WeatherDatabase : RoomDatabase() {
 
     abstract fun accessToWeatherDatabase(): currentWeatherDao
     abstract fun accessToLocationDatabase(): LocationDao
+    abstract fun accessToFutureDatabase(): FutureDao
 }

@@ -2,7 +2,6 @@ package com.example.buidlingforecast.ui.weather.current
 
 import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,7 +10,6 @@ import androidx.lifecycle.Observer
 import com.example.buidlingforecast.R
 import com.example.buidlingforecast.internal.glide.GlideApp
 import com.example.buidlingforecast.ui.base.ScopedFragment
-import kotlinx.android.synthetic.main.current_detail_fragment.*
 import kotlinx.android.synthetic.main.weather_fragment.*
 import kotlinx.coroutines.launch
 import org.kodein.di.Kodein
@@ -69,7 +67,7 @@ class WeatherFragment : ScopedFragment(), KodeinAware {
     private fun settingWeatherImage(url: String) {
         GlideApp.with(this@WeatherFragment)
             .load(url)
-            .into(imageView_condition_icon)
+            .into(image_conditions)
 
     }
 
@@ -84,14 +82,14 @@ class WeatherFragment : ScopedFragment(), KodeinAware {
 
     private fun updateTemperature(temp: Double, feelsLike: Double) {
         val unit = chooseLocationUnit("°C", "°F")
-        textView_temperature.text = "$temp$unit"
+        temperature.text = "$temp$unit"
         textView_feels_like_temperature.text = "$feelsLike$unit"
 
     }
 
     private fun updateCondition(condition: String) {
 
-        textView_condition.text = condition
+        condition_tv.text = condition
     }
 
     private fun updatePerciptation(perceptationVolume: Double) {

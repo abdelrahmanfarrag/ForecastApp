@@ -1,6 +1,7 @@
 package com.example.buidlingforecast.data.network
 
 import com.example.buidlingforecast.data.network.response.CurrentWeather
+import com.example.buidlingforecast.data.network.response.FutureResponse
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import kotlinx.coroutines.Deferred
 import okhttp3.Interceptor
@@ -12,7 +13,8 @@ import retrofit2.http.Query
 
 const val API_KEY = "3d228798136c466eaaa125757180611"
 
-//https://api.apixu.com/v1/current.json?q=london&lang=ar&key=3d228798136c466eaaa125757180611
+//current => https://api.apixu.com/v1/current.json?q=london&lang=ar&key=3d228798136c466eaaa125757180611
+//future =>http://api.apixu.com/v1/forecast.json?key=3d228798136c466eaaa125757180611&q=cairo&days=1
 interface ApixuService {
 
     @GET("current.json")
@@ -20,6 +22,14 @@ interface ApixuService {
         @Query("q") location: String,
         @Query("lang") language: String = "en"
     ): Deferred<CurrentWeather>
+
+    @GET("forecast.json")
+    fun getFutureWeather(
+        @Query("q") location: String,
+        @Query("days") numOfDays: Int,
+        @Query("lang") language: String = "en"
+    ): Deferred<FutureResponse>
+
 
     companion object {
 

@@ -11,6 +11,7 @@ import com.example.buidlingforecast.data.provider.UnitProviderImpl
 import com.example.buidlingforecast.data.repository.ForecastRepository
 import com.example.buidlingforecast.data.repository.ForecastRepositoryImpl
 import com.example.buidlingforecast.ui.weather.current.WeatherViewmodelFactory
+import com.example.buidlingforecast.ui.weather.future.WeatherFutureViewmodelFactory
 import com.jakewharton.threetenabp.AndroidThreeTen
 import okhttp3.internal.connection.ConnectInterceptor
 import org.kodein.di.Kodein
@@ -29,6 +30,7 @@ class ForecastApplication : Application(), KodeinAware {
         bind() from singleton { WeatherDatabase(instance()) }
         bind() from singleton { instance<WeatherDatabase>().accessToWeatherDatabase() }
         bind() from singleton { instance<WeatherDatabase>().accessToLocationDatabase() }
+        bind() from singleton { instance<WeatherDatabase>().accessToFutureDatabase() }
 
         bind<connectivityInterceptor>() with singleton { connectivityInterceptorImpl(instance()) }
         bind() from singleton { ApixuService(instance()) }
@@ -39,11 +41,13 @@ class ForecastApplication : Application(), KodeinAware {
                 instance(),
                 instance(),
                 instance(),
+                instance(),
                 instance()
             )
         }
         bind<UnitProvider>() with singleton { UnitProviderImpl(instance()) }
         bind() from provider { WeatherViewmodelFactory(instance(), instance()) }
+        bind() from provider { WeatherFutureViewmodelFactory(instance(), instance()) }
 
 
     }

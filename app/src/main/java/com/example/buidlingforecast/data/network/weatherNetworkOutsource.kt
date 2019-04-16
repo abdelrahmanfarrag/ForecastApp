@@ -2,10 +2,14 @@ package com.example.buidlingforecast.data.network
 
 import androidx.lifecycle.LiveData
 import com.example.buidlingforecast.data.network.response.CurrentWeather
+import com.example.buidlingforecast.data.network.response.FutureResponse
 
 interface weatherNetworkOutsource {
-    val downloadedWearherData : LiveData<CurrentWeather>
 
-    suspend fun fetchCurrentWeather(location:String,lang:String)
+    val downloadedWearherData: LiveData<CurrentWeather>
+    val downloadedFutureWeatherData: LiveData<FutureResponse>
+
+    suspend fun fetchCurrentWeather(location: String, lang: String)
+    suspend fun fetchFutureWeather(location: String, lang: String, days: Int)
 
 }
