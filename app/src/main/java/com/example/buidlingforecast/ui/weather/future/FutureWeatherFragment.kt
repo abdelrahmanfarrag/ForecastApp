@@ -2,17 +2,18 @@ package com.example.buidlingforecast.ui.weather.future
 
 import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 
 import com.example.buidlingforecast.R
-import com.example.buidlingforecast.data.database.unitlocalized.future.UnitSpecificFutureWeatherEntry
+import com.example.buidlingforecast.data.database.LocalDateConverter
+import com.example.buidlingforecast.data.database.unitlocalized.future.list.UnitSpecificFutureWeatherEntry
 import com.example.buidlingforecast.ui.base.ScopedFragment
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.ViewHolder
@@ -23,6 +24,7 @@ import org.kodein.di.Kodein
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.x.closestKodein
 import org.kodein.di.generic.instance
+import org.threeten.bp.LocalDate
 
 class FutureWeatherFragment : ScopedFragment(), KodeinAware {
 
@@ -80,8 +82,18 @@ class FutureWeatherFragment : ScopedFragment(), KodeinAware {
             adapter = groupie_adapter
         }
         groupie_adapter.setOnItemClickListener { item, view ->
-            Toast.makeText(this.context, "Show future details", Toast.LENGTH_LONG).show()
+            // Toast.makeText(this.context, "Show future details", Toast.LENGTH_LONG).show()
+            (item as FutureWeatherItem)?.let { futureWeatherItem ->
+                moveToDetailScreen(futureWeatherItem.entry.localDate, view)
+
+            }
         }
+    }
+
+    private fun moveToDetailScreen(date: LocalDate, view: View) {
+        val dateString = LocalDateConverter.dateToString(date)!!
+        val action = FutureWeatherFragmentDirections.actionDetail(dateString)
+        Navigation.findNavController(view).navigate(action)
     }
 
 

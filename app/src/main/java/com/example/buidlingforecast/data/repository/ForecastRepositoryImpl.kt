@@ -6,7 +6,8 @@ import com.example.buidlingforecast.data.database.LocationDao
 import com.example.buidlingforecast.data.database.currentWeatherDao
 import com.example.buidlingforecast.data.database.entity.Location
 import com.example.buidlingforecast.data.database.unitlocalized.current.unitSpecificCurrentWeatherEntry
-import com.example.buidlingforecast.data.database.unitlocalized.future.UnitSpecificFutureWeatherEntry
+import com.example.buidlingforecast.data.database.unitlocalized.future.detail.UnitDetailSpecific
+import com.example.buidlingforecast.data.database.unitlocalized.future.list.UnitSpecificFutureWeatherEntry
 import com.example.buidlingforecast.data.network.response.CurrentWeather
 import com.example.buidlingforecast.data.network.response.FutureResponse
 import com.example.buidlingforecast.data.network.weatherNetworkOutsource
@@ -67,6 +68,17 @@ class ForecastRepositoryImpl(
         }
     }
 
+    override suspend fun getDetailedFutureWeather(
+        isMetric: Boolean,
+        date: LocalDate
+    ): LiveData<out UnitDetailSpecific> {
+        return withContext(Dispatchers.IO) {
+            instantiateNetworkCall()
+            return@withContext if (isMetric) fututreDao.getDetailedFutureWeatherInMetric(date)
+            else fututreDao.getDetailedFutureWeatherInImperial(date)
+        }
+    }
+
 
     private fun persistData(fetchWeather: CurrentWeather) {
         GlobalScope.launch(Dispatchers.IO) {
@@ -112,7 +124,7 @@ class ForecastRepositoryImpl(
 
     }
 
-    private suspend fun isFutureWeatherNeeded(): Boolean {
+    private fun isFutureWeatherNeeded(): Boolean {
         val today = LocalDate.now()
         val futureWeatherCount = fututreDao.countFutureEntries(today)
         return futureWeatherCount < FORECAST_DAYS_COUNT
@@ -123,7 +135,7 @@ class ForecastRepositoryImpl(
     }
 
     private suspend fun fetchFutureWeatherFromNetwork() {
-        weatherNetworkSource.fetchFutureWeather(locationProvider.getLocationString(), Locale.getDefault().language, 1)
+        weatherNetworkSource.fetchFutureWeather(locationProvider.getLocationString(), Locale.getDefault().language, 10)
 
     }
 

@@ -1,8 +1,8 @@
 package com.example.buidlingforecast.ui.weather.future
 
 import com.example.buidlingforecast.R
-import com.example.buidlingforecast.data.database.unitlocalized.future.FutureMetric
-import com.example.buidlingforecast.data.database.unitlocalized.future.UnitSpecificFutureWeatherEntry
+import com.example.buidlingforecast.data.database.unitlocalized.future.list.FutureMetric
+import com.example.buidlingforecast.data.database.unitlocalized.future.list.UnitSpecificFutureWeatherEntry
 import com.example.buidlingforecast.internal.glide.GlideApp
 import com.xwray.groupie.kotlinandroidextensions.Item
 import com.xwray.groupie.kotlinandroidextensions.ViewHolder

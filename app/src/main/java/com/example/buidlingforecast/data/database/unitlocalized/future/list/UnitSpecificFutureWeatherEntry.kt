@@ -1,4 +1,4 @@
-package com.example.buidlingforecast.data.database.unitlocalized.future
+package com.example.buidlingforecast.data.database.unitlocalized.future.list
 
 import org.threeten.bp.LocalDate
 
