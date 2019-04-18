@@ -23,7 +23,7 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-   // override fun onSupportNavigateUp(): Boolean {
-    //    return NavigationUI.navigateUp(null, navcController)
-   // }
+    override fun onSupportNavigateUp(): Boolean {
+        return NavigationUI.navigateUp(navcController,null)
+    }
 }
