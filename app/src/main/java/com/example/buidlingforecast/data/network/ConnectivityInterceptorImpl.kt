@@ -5,9 +5,8 @@ import android.net.ConnectivityManager
 import com.example.buidlingforecast.internal.NoConnectivityException
 import okhttp3.Interceptor
 import okhttp3.Response
-import java.io.IOException
 
-class connectivityInterceptorImpl(context: Context) : connectivityInterceptor {
+class ConnectivityInterceptorImpl(context: Context) : ConnectivityInterceptor {
     private val appContext = context.applicationContext
     override fun intercept(chain: Interceptor.Chain): Response {
         if (!isOnline()) throw NoConnectivityException()
@@ -21,4 +20,5 @@ class connectivityInterceptorImpl(context: Context) : connectivityInterceptor {
         val networkInfo = connectivityManager.activeNetworkInfo
         return networkInfo != null && networkInfo.isConnected
     }
+
 }

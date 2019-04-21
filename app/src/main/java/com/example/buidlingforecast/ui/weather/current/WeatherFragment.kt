@@ -1,5 +1,6 @@
 package com.example.buidlingforecast.ui.weather.current
 
+import android.annotation.SuppressLint
 import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -11,13 +12,15 @@ import com.example.buidlingforecast.R
 import com.example.buidlingforecast.internal.glide.GlideApp
 import com.example.buidlingforecast.ui.base.ScopedFragment
 import kotlinx.android.synthetic.main.weather_fragment.*
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import org.kodein.di.Kodein
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.x.closestKodein
 import org.kodein.di.generic.instance
 
-@Suppress("SENSELESS_COMPARISON")
+@Suppress("SENSELESS_COMPARISON", "NAME_SHADOWING")
+@SuppressLint("SetTextI18n")
 class WeatherFragment : ScopedFragment(), KodeinAware {
 
     override val kodein: Kodein by closestKodein()
@@ -39,7 +42,7 @@ class WeatherFragment : ScopedFragment(), KodeinAware {
         bindUi()
     }
 
-    private fun bindUi() = launch {
+    private fun bindUi(): Job = launch {
         val currentWeather = viewModel.fetchWeatherFromRepo.await()
         val location = viewModel.fetchUserLocation.await()
         currentWeather.observe(this@WeatherFragment, Observer {
@@ -47,7 +50,7 @@ class WeatherFragment : ScopedFragment(), KodeinAware {
             if (it == null) return@Observer
             val loadingUrl = "https:${it.conditionImgUrl}"
             group_loading.visibility = View.GONE
-            updateDate("")
+            updateDate()
             updateTemperature(it.tempreature, it.feelsLikeTemperature)
             updateCondition(it.conditionText)
             updatePerciptation(it.precipationVolume)
@@ -104,13 +107,13 @@ class WeatherFragment : ScopedFragment(), KodeinAware {
         textView_wind.text = "Wind : $windDirection,$windSpeed$windUnit"
     }
 
-    private fun updateSpeed(visiblityDisance: Double) {
+    private fun updateSpeed(visiblityDistance: Double) {
         val visiblityUnit = chooseLocationUnit("km", "mi.")
-        textView_visibility.text = "Visiblity : $visiblityDisance$visiblityUnit"
+        textView_visibility.text = "Visiblity : $visiblityDistance$visiblityUnit"
 
     }
 
-    private fun updateDate(date: String) {
+    private fun updateDate() {
         (activity as? AppCompatActivity)?.supportActionBar?.subtitle = "Today"
     }
 

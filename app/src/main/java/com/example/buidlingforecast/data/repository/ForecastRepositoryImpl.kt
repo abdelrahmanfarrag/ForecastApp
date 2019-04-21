@@ -10,7 +10,7 @@ import com.example.buidlingforecast.data.database.unitlocalized.future.detail.Un
 import com.example.buidlingforecast.data.database.unitlocalized.future.list.UnitSpecificFutureWeatherEntry
 import com.example.buidlingforecast.data.network.response.CurrentWeather
 import com.example.buidlingforecast.data.network.response.FutureResponse
-import com.example.buidlingforecast.data.network.weatherNetworkOutsource
+import com.example.buidlingforecast.data.network.WeatherNetworkOutsource
 import com.example.buidlingforecast.data.provider.LocationProvider
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -27,7 +27,7 @@ class ForecastRepositoryImpl(
     private val weatherDao: currentWeatherDao,
     private val locationDao: LocationDao,
     private val fututreDao: FutureDao,
-    private val weatherNetworkSource: weatherNetworkOutsource,
+    private val weatherNetworkSource: WeatherNetworkOutsource,
     private val locationProvider: LocationProvider
 ) : ForecastRepository {
 
@@ -40,7 +40,7 @@ class ForecastRepositoryImpl(
     init {
 
         weatherNetworkSource.apply {
-            downloadedWearherData.observeForever { currentWeather ->
+            downloadedWeatherData.observeForever { currentWeather ->
                 persistData(currentWeather)
             }
             downloadedFutureWeatherData.observeForever { futureWeather ->

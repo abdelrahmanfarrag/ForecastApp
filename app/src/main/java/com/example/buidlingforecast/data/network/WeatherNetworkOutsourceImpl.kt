@@ -7,13 +7,13 @@ import com.example.buidlingforecast.data.network.response.CurrentWeather
 import com.example.buidlingforecast.data.network.response.FutureResponse
 import com.example.buidlingforecast.internal.NoConnectivityException
 
-class weatherNetworkOutsourceImpl(private val apixuService: ApixuService) : weatherNetworkOutsource {
+class WeatherNetworkOutsourceImpl(private val apixuService: ApixuService) : WeatherNetworkOutsource {
 
 
     private val _updatedCurrentLiveData = MutableLiveData<CurrentWeather>()
     private val _updateFutureLiveData = MutableLiveData<FutureResponse>()
 
-    override val downloadedWearherData: LiveData<CurrentWeather>
+    override val downloadedWeatherData: LiveData<CurrentWeather>
         get() = _updatedCurrentLiveData
 
     override val downloadedFutureWeatherData: LiveData<FutureResponse>
@@ -22,7 +22,7 @@ class weatherNetworkOutsourceImpl(private val apixuService: ApixuService) : weat
 
     override suspend fun fetchCurrentWeather(location: String, lang: String) {
         try {
-            val fetchedData = apixuService.getCurrentWeather(location, lang).await()
+            val fetchedData = apixuService.getCurrentWeatherAsync(location, lang).await()
             _updatedCurrentLiveData.postValue(fetchedData)
         } catch (e: NoConnectivityException) {
 
@@ -34,7 +34,7 @@ class weatherNetworkOutsourceImpl(private val apixuService: ApixuService) : weat
 
     override suspend fun fetchFutureWeather(location: String, lang: String, days: Int) {
         try {
-            val fetchFutureData = apixuService.getFutureWeather(location, days, lang).await()
+            val fetchFutureData = apixuService.getFutureWeatherAsync(location, days, lang).await()
             _updateFutureLiveData.postValue(fetchFutureData)
 
         } catch (e: NoConnectivityException) {

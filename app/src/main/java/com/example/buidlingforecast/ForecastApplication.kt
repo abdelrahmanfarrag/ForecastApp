@@ -14,14 +14,11 @@ import com.example.buidlingforecast.ui.weather.current.WeatherViewmodelFactory
 import com.example.buidlingforecast.ui.weather.future.WeatherFutureViewmodelFactory
 import com.example.buidlingforecast.ui.weather.future.detail.DetailFutureViewModelFactory
 import com.jakewharton.threetenabp.AndroidThreeTen
-import okhttp3.internal.connection.ConnectInterceptor
-import org.kodein.di.Factory
 import org.kodein.di.Kodein
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.x.androidXModule
 import org.kodein.di.generic.*
 import org.threeten.bp.LocalDate
-import kotlin.math.sin
 
 class ForecastApplication : Application(), KodeinAware {
 
@@ -32,9 +29,10 @@ class ForecastApplication : Application(), KodeinAware {
         bind() from singleton { instance<WeatherDatabase>().accessToLocationDatabase() }
         bind() from singleton { instance<WeatherDatabase>().accessToFutureDatabase() }
 
-        bind<connectivityInterceptor>() with singleton { connectivityInterceptorImpl(instance()) }
-        bind() from singleton { ApixuService(instance<connectivityInterceptor>()) }
-        bind<weatherNetworkOutsource>() with singleton { weatherNetworkOutsourceImpl(instance()) }
+        bind<ConnectivityInterceptor>() with singleton { ConnectivityInterceptorImpl(instance()) }
+        bind<LoggingInterceptor>() with singleton { LoggingInterceptorImpl() }
+        bind() from singleton { ApixuService(instance<ConnectivityInterceptor>(),instance<LoggingInterceptor>()) }
+        bind<WeatherNetworkOutsource>() with singleton { WeatherNetworkOutsourceImpl(instance()) }
         bind<LocationProvider>() with singleton { LocationProviderImpl() }
         bind<ForecastRepository>() with singleton {
             ForecastRepositoryImpl(
